@@ -8,7 +8,7 @@ contract BirdManager {
         uint64 id;
         uint64 birthTime;
         address owner;
-        uint64 coin;
+        uint64 weight;
         uint32 exp;
         uint32 power;
         uint32 speed;
@@ -108,7 +108,7 @@ contract BirdManager {
             owner: _ownerAddress,
             genes : _genes,
             birthTime : _birthTime,
-            coin : 1000,
+            weight : 1000,
             exp : 0,
             power : _getNumber(_genes[0]),
             speed : _getNumber(_genes[1]),
@@ -241,8 +241,8 @@ contract BirdManager {
             _addPower(_id, 103, 100);
             //增加3%速度
             _addSpeed(_id, 103, 100);
-            //增加100 coin
-            _bird.coin += 100;
+            //增加100 weight
+            _bird.weight += 100;
         }
     }
 
@@ -253,24 +253,24 @@ contract BirdManager {
         Bird storage _fromBird = birdsMap[_fromBirdId];
         Bird storage _toBird = birdsMap[_toBirdId];
         
-        if(_fromBird.coin == 0)
+        if(_fromBird.weight == 0)
         {
             return 0;
         }
 
-        uint64 deltaCoin = uint64(_fromBird.coin * rate_n / rate_d);
+        uint64 deltaCoin = uint64(_fromBird.weight * rate_n / rate_d);
         if(deltaCoin == 0)
         {
             deltaCoin = 1;
         }
 
-        if(deltaCoin > _fromBird.coin)
+        if(deltaCoin > _fromBird.weight)
         {
-            deltaCoin = _fromBird.coin;
+            deltaCoin = _fromBird.weight;
         }
 
-        _fromBird.coin -= deltaCoin;
-        _toBird.coin += deltaCoin;
+        _fromBird.weight -= deltaCoin;
+        _toBird.weight += deltaCoin;
 
         return deltaCoin;
     }
@@ -396,8 +396,8 @@ contract BirdManager {
         Bird memory _Bird = birdsMap[_id];
         Bird memory _anotherBird = birdsMap[_anotherBirdId];
 		
-        uint64 attack1 = (_Bird.power * 10 * 2) / _anotherBird.power + (_Bird.coin * 10) / _anotherBird.coin + (_Bird.speed * 10) / _anotherBird.speed;
-        uint64 attack2 = (_anotherBird.power * 10 * 2) / _Bird.power + (_anotherBird.coin * 10) / _Bird.coin + (_anotherBird.speed * 10) / _Bird.speed;
+        uint64 attack1 = (_Bird.power * 10 * 2) / _anotherBird.power + (_Bird.weight * 10) / _anotherBird.weight + (_Bird.speed * 10) / _anotherBird.speed;
+        uint64 attack2 = (_anotherBird.power * 10 * 2) / _Bird.power + (_anotherBird.weight * 10) / _Bird.weight + (_anotherBird.speed * 10) / _Bird.speed;
 
         //PKAttackEvent(attack1, attack2);
 
@@ -436,7 +436,7 @@ contract BirdManager {
         bytes32 genes,
         uint64 birthTime,
         address owner,
-        uint64 coin,
+        uint64 weight,
         uint32 exp,
         uint32 power,
         uint32 speed,
@@ -452,7 +452,7 @@ contract BirdManager {
         genes = _bird.genes;
 		birthTime = _bird.birthTime;
 		owner = _bird.owner;
-		coin = _bird.coin;
+		weight = _bird.weight;
 		exp = _bird.exp;
 		power = _bird.power;
 		speed = _bird.speed;
@@ -462,7 +462,7 @@ contract BirdManager {
         return (genes,
                 birthTime,
 				owner,
-				coin,
+				weight,
                 exp,
                 power,
                 speed,
